@@ -141,35 +141,27 @@ const editBookByIdHandler = (request, h) => {
   const finished = readPage === pageCount
 
   if (index !== -1) {
-    if (name !== books[index].name) {
-      books[index] = {
-        ...books[index],
-        name: name + ' revisi',
-        year,
-        author,
-        summary,
-        publisher,
-        pageCount,
-        readPage,
-        finished,
-        reading,
-        updatedAt
-      }
-    } else {
-      books[index] = {
-        ...books[index],
-        name,
-        year,
-        author,
-        summary,
-        publisher,
-        pageCount,
-        readPage,
-        finished,
-        reading,
-        updatedAt
-      }
+    const existingBook = books[index]
+    const updatedBook = {
+      ...existingBook,
+      name: name.trim(),
+      year,
+      author,
+      summary,
+      publisher,
+      pageCount,
+      readPage,
+      finished,
+      reading,
+      updatedAt
     }
+
+    if (name.toLowerCase() === existingBook.name.toLowerCase()) {
+      updatedBook.name += ' revisi'
+    }
+
+    books[index] = updatedBook
+
     const response = h.response({
       status: 'success',
       message: 'Buku berhasil diperbarui'
@@ -177,6 +169,7 @@ const editBookByIdHandler = (request, h) => {
     response.code(200)
     return response
   }
+
   const response = h.response({
     status: 'fail',
     message: 'Gagal memperbarui buku. Id tidak ditemukan'
