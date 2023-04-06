@@ -155,11 +155,6 @@ const editBookByIdHandler = (request, h) => {
       reading,
       updatedAt
     }
-
-    if (name.toLowerCase() === existingBook.name.toLowerCase()) {
-      updatedBook.name += ' revisi'
-    }
-
     books[index] = updatedBook
 
     const response = h.response({
